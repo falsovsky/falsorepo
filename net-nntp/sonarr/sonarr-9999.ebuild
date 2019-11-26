@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit user systemd
+inherit systemd
 
 SRC_URI="http://update.sonarr.tv/v2/master/mono/NzbDrone.master.tar.gz"
 
@@ -13,6 +13,7 @@ HOMEPAGE="https://www.sonarr.tv"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+DEPEND="acct-user/sonarr acct-group/sonarr"
 RDEPEND="
 	>=dev-lang/mono-4.4.1.0
 	media-video/mediainfo
@@ -20,11 +21,6 @@ RDEPEND="
 
 MY_PN=NzbDrone
 S="${WORKDIR}/${MY_PN}"
-
-pkg_setup() {
-	enewgroup ${PN}
-	enewuser ${PN} -1 -1 /var/lib/sonarr ${PN}
-}
 
 src_install() {
 	newconfd "${FILESDIR}/${PN}.conf" ${PN}

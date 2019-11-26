@@ -4,7 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
-inherit eutils user systemd unpacker pax-utils python-single-r1
+inherit eutils systemd unpacker pax-utils python-single-r1
 
 MINOR_VERSION="2041-3d469cb32"
 
@@ -12,8 +12,6 @@ _APPNAME="plexmediaserver"
 _USERNAME="plex"
 _SHORTNAME="${_USERNAME}"
 _FULL_VERSION="${PV}.${MINOR_VERSION}"
-
-#https://downloads.plex.tv/plex-media-server-new/1.17.0.1709-982421575/debian/plexmediaserver_1.17.0.1709-982421575_amd64.deb
 
 URI="https://downloads.plex.tv/plex-media-server-new"
 
@@ -27,6 +25,8 @@ KEYWORDS="-* ~amd64"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="
+	acct-user/plex
+	acct-group/plex
 	sys-apps/fix-gnustack
 	dev-python/virtualenv[${PYTHON_USEDEP}]"
 
@@ -45,11 +45,8 @@ EXECSTACKED_BINS=( "${ED}/usr/lib/plexmediaserver/libgnsdk_dsp.so*" )
 BINS_TO_PAX_MARK=( "${ED}/usr/lib/plexmediaserver/Plex Script Host" )
 
 S="${WORKDIR}"
-#PATCHES=( "${FILESDIR}/virtualenv_start_pms.patch" )
 
 pkg_setup() {
-	enewgroup ${_USERNAME}
-	enewuser ${_USERNAME} -1 /bin/bash /var/lib/${_APPNAME} "${_USERNAME},video"
 	python-single-r1_pkg_setup
 }
 

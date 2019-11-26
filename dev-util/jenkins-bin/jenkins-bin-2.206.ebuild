@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit user systemd
+inherit systemd
 
 DESCRIPTION="Extensible continuous integration server"
 HOMEPAGE="https://jenkins.io/"
@@ -14,6 +14,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86 ~amd64-linux"
 IUSE=""
 
+DEPEND="acct-user/jenkins acct-group/jenkins"
+
 RDEPEND="media-fonts/dejavu
 	media-libs/freetype
 	!dev-util/jenkins-bin:lts
@@ -22,11 +24,6 @@ RDEPEND="media-fonts/dejavu
 S=${WORKDIR}
 
 JENKINS_DIR=/var/lib/jenkins
-
-pkg_setup() {
-	enewgroup jenkins
-	enewuser jenkins -1 -1 ${JENKINS_DIR} jenkins
-}
 
 src_install() {
 	keepdir /var/log/jenkins ${JENKINS_DIR}/backup ${JENKINS_DIR}/home
