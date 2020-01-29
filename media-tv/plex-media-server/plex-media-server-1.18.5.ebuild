@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python2_7 )
 inherit eutils systemd unpacker pax-utils python-single-r1
 
-MINOR_VERSION="2058-e67a4e892"
+MINOR_VERSION="2309-f5213a238"
 
 _APPNAME="plexmediaserver"
 _USERNAME="plex"
@@ -60,7 +60,7 @@ src_install() {
 	local CONFIG_PATH="/etc/${_SHORTNAME}"
 	dodir "${CONFIG_PATH}"
 	insinto "${CONFIG_PATH}"
-	doins "${CONFIG_VANILLA#/}"
+	newins usr/lib/plexmediaserver/lib/plexmediaserver.default plexmediaserver
 	sed -e "s#${CONFIG_VANILLA}#${CONFIG_PATH}/${_APPNAME}#g" -i "${S}"/usr/sbin/start_pms || die
 
 	# Remove Debian specific files
@@ -91,11 +91,6 @@ src_install() {
 	# Mask Plex libraries so that revdep-rebuild doesn't try to rebuild them.
 	# Plex has its own precompiled libraries.
 	_mask_plex_libraries_revdep
-
-	# Install systemd service file
-	local INIT_NAME="${PN}.service"
-	local INIT="${FILESDIR}/systemd/${INIT_NAME}"
-	systemd_newunit "${INIT}" "${INIT_NAME}"
 
 	_remove_execstack_markings
 	_add_pax_markings
