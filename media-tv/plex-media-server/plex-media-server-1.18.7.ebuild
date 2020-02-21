@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python2_7 )
 inherit eutils systemd unpacker pax-utils python-single-r1
 
-MINOR_VERSION="2309-f5213a238"
+MINOR_VERSION="2438-f342a5a43"
 
 _APPNAME="plexmediaserver"
 _USERNAME="plex"
@@ -28,11 +28,9 @@ DEPEND="
 	acct-user/plex
 	acct-group/plex
 	sys-apps/fix-gnustack
-	dev-python/virtualenv[${PYTHON_USEDEP}]"
+	dev-python/virtualenv"
 
-RDEPEND="
-	net-dns/avahi
-	${PYTHON_DEPS}"
+RDEPEND="net-dns/avahi"
 
 QA_DESKTOP_FILE="usr/share/applications/plexmediaserver.desktop"
 QA_PREBUILT="*"
