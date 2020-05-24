@@ -1,0 +1,54 @@
+#!/sbin/openrc-run
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+        need net
+}
+
+run_dir="/var/run/jackett"
+pidfile="$run_dir/jackett.pid"
+etc_dir="/etc/jackett"
+var_dir="/var/lib/jackett"
+log_dir="/var/log/jackett"
+log_file="jackett.log"
+program="$APP_DIR/JackettConsole.exe"
+bin=`which mono`
+
+check_config() {
+    
+    if [ ! -d "${run_dir}" ]; then
+            mkdir "${run_dir}"
+    fi
+    if [ ! -d "${var_dir}" ]; then
+            mkdir "${var_dir}"
+    fi
+
+    # Permission stuff. Should ensure that the daemon user always have write permissions.
+    # Quick and ugly but should get the job done.
+
+    chown -R ${USER}:${GROUP} "${run_dir}"
+    chown -R ${USER}.${GROUP} "${var_dir}"
+    chown -R ${USER}.${GROUP} "${etc_dir}"
+    if [ "${WEBUPDATER}" = "YES" ]; then
+                chown -R ${USER}.${GROUP} "${CODE_DIR}"
+        fi
+}
+
+start() {
+    check_config
+
+        ebegin "Starting Jackett"
+
+        start-stop-daemon --start --background --make-pidfile --pidfile ${pidfile}\
+        -u ${USER} -g ${GROUP} --name Jackett\
+    --exec ${bin} -- ${program}
+        eend $?
+}
+
+stop() {
+        ebegin "Stopping Jackett"
+        start-stop-daemon --stop --pidfile ${pidfile} --retry 15 --name Jackett
+        eend $?
+}
