@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python2_7 )
 inherit eutils systemd unpacker pax-utils python-single-r1
 
-MINOR_VERSION="2578-513b381af"
+MINOR_VERSION="2935-79e214ead"
 
 _APPNAME="plexmediaserver"
 _USERNAME="plex"
@@ -59,7 +59,10 @@ src_install() {
 	dodir "${CONFIG_PATH}"
 	insinto "${CONFIG_PATH}"
 	newins usr/lib/plexmediaserver/lib/plexmediaserver.default plexmediaserver
-	sed -e "s#${CONFIG_VANILLA}#${CONFIG_PATH}/${_APPNAME}#g" -i "${S}"/usr/sbin/start_pms || die
+	#sed -e "s#${CONFIG_VANILLA}#${CONFIG_PATH}/${_APPNAME}#g" -i "${S}"/usr/sbin/start_pms || die
+	#insinto "/etc/init.d"
+	#newins usr/lib/plexmediaserver/lib/plexmediaserver.init plexmediaserverNEW
+	doinitd usr/lib/plexmediaserver/lib/plexmediaserver.init
 
 	# Remove Debian specific files
 	rm -rf "usr/share/doc" || die
@@ -80,7 +83,7 @@ src_install() {
 	keepdir "${DEFAULT_LIBRARY_DIR}"
 
 	# Install the OpenRC init/conf files
-	doinitd "${FILESDIR}/init.d/${PN}"
+	#doinitd "${FILESDIR}/init.d/${PN}"
 	doconfd "${FILESDIR}/conf.d/${PN}"
 
 	# Disabling due to Bug 644694

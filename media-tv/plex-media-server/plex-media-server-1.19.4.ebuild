@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python2_7 )
 inherit eutils systemd unpacker pax-utils python-single-r1
 
-MINOR_VERSION="2843-e3c1f7bcd"
+MINOR_VERSION="2902-69560ce1e"
 
 _APPNAME="plexmediaserver"
 _USERNAME="plex"
