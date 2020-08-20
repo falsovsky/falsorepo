@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake
 
 DESCRIPTION="FiSH encryption for irssi"
 HOMEPAGE="https://github.com/falsovsky/FiSH-irssi/"
